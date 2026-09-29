@@ -4,18 +4,46 @@ extends Control
 
 @onready var hp_value: Label = $HpValue
 @onready var health_bar: ColorRect = %HealthBar
+@onready var chunk_bar: ColorRect = %ChunkBar
 
 var maxWidth: int = 0
-var maxHeight: int = 0
+
+var shown = curHealth
+var chunkShown = curHealth
+var curHealth: int = 100
+var maxHealth: int = 100
+
+const LERP_SPEED: float = 12.0
+
+const CHUNK_TIMER: float = 0.4
+var chunkTimer: float = 0
 
 func _ready() -> void:
 	dummy.changeHealth.connect(updateHealthBar)
 	maxWidth = health_bar.size.x
-	maxHeight = health_bar.size.y
+	
+func _process(dt: float):
+	# 2. Smooth drain
+	smoothHealthBar(dt)
+	
+	# 3. Damage chunk
+	chunkTimer -= dt
+	if chunkTimer <= 0:
+		smoothChunkBar(dt)
+
+func smoothHealthBar(dt):
+	shown = lerpf(shown, float(curHealth), 10 * dt)
+	health_bar.size.x = maxWidth * float(shown) / maxHealth
+	
+	hp_value.text = "%s/%s" % [int(shown), maxHealth]
+
+func smoothChunkBar(dt):
+	chunkShown = lerpf(chunkShown, float(curHealth), 7 * dt)
+	chunk_bar.size.x = maxWidth * float(chunkShown) / maxHealth
 
 func updateHealthBar(curHealth: int, maxHealth: int):
-	var ratio: float = float(curHealth) / maxHealth
+	self.curHealth = curHealth
+	self.maxHealth = maxHealth
 	
-	hp_value.text = "%s/%s" % [curHealth, maxHealth]
-	health_bar.size = Vector2(maxWidth * ratio, maxHeight)
+	chunkTimer = CHUNK_TIMER
 	

@@ -45,6 +45,15 @@ offset_bottom = 42.0
 pivot_offset = Vector2(48, 6)
 color = Color(0, 0, 0, 1)
 
+[node name="ChunkBar" type="ColorRect" parent="UI/HealthBar" unique_id=1459841871]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 60.0
+offset_top = 25.0
+offset_right = 260.0
+offset_bottom = 41.0
+color = Color(0.9411765, 1, 0.9411765, 1)
+
 [node name="HealthBar" type="ColorRect" parent="UI/HealthBar" unique_id=1339855551]
 unique_name_in_owner = true
 layout_mode = 0

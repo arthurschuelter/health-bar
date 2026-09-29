@@ -9,9 +9,8 @@ var maxHealth: int = 100
 var mouseEntered: bool = false
 signal changeHealth
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+#func _ready() -> void:
+	#pass
 
 func _input(event: InputEvent):
 	handleMouse(event)
