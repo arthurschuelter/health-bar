@@ -9,9 +9,6 @@ var maxHealth: int = 100
 var mouseEntered: bool = false
 signal changeHealth
 
-#func _ready() -> void:
-	#pass
-
 func _input(event: InputEvent):
 	handleMouse(event)
 

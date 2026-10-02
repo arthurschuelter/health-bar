@@ -8,10 +8,10 @@ extends Control
 
 var maxWidth: int = 0
 
-var shown = curHealth
-var chunkShown = curHealth
 var curHealth: int = 100
 var maxHealth: int = 100
+var shown = curHealth
+var chunkShown = curHealth
 
 const LERP_SPEED: float = 12.0
 
@@ -32,13 +32,13 @@ func _process(dt: float):
 		smoothChunkBar(dt)
 
 func smoothHealthBar(dt):
-	shown = lerpf(shown, float(curHealth), 10 * dt)
+	shown = lerpf(shown, float(curHealth), LERP_SPEED * dt)
 	health_bar.size.x = maxWidth * float(shown) / maxHealth
 	
 	hp_value.text = "%s/%s" % [int(shown), maxHealth]
 
 func smoothChunkBar(dt):
-	chunkShown = lerpf(chunkShown, float(curHealth), 7 * dt)
+	chunkShown = lerpf(chunkShown, float(curHealth), LERP_SPEED * 0.7 * dt)
 	chunk_bar.size.x = maxWidth * float(chunkShown) / maxHealth
 
 func updateHealthBar(curHealth: int, maxHealth: int):
