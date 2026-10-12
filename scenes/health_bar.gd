@@ -5,6 +5,7 @@ extends Control
 @onready var hp_value: Label = $HpValue
 @onready var health_bar: ColorRect = %HealthBar
 @onready var chunk_bar: ColorRect = %ChunkBar
+@onready var flash_bar: ColorRect = %FlashBar
 
 # Size and position
 var maxWidth: int = 0
@@ -23,9 +24,13 @@ var chunkShown = curHealth
 var chunkTimer: float = 0
 
 # Shake Animation
-var SHAKE_DURATION: float = 0.15
+const SHAKE_DURATION: float = 0.15
 var shakeAmount: float = 2
 var shakeTimer: float  = 0
+
+# Flash Animation
+const FLASH_SPEED: float = 12.0
+
 
 # Helpers
 var rng = RandomNumberGenerator.new()
@@ -44,12 +49,15 @@ func _process(dt: float):
 	if chunkTimer <= 0:
 		smoothChunkBar(dt)
 	
-	# 5. Shake Animation
+	# 5. Shake animation
 	shakeTimer -= dt
 	if shakeTimer >= 0:
 		shakeHealthBar()
 	else:
 		self.position = startingPosition
+	
+	# 6. Flash animation
+	flashAnimation(dt)
 
 func smoothHealthBar(dt: float):
 	shown = lerpf(shown, float(curHealth), LERP_SPEED * dt)
@@ -72,9 +80,14 @@ func shakeHealthBar():
 		rng.randf_range(-shakeStrength, shakeStrength)
 	)
 
+func flashAnimation(dt: float):
+	if flash_bar.color.a > 0:
+		flash_bar.color.a -= dt * FLASH_SPEED
+
 func updateHealthBar(curHealth: int, maxHealth: int):
 	self.curHealth = curHealth
 	self.maxHealth = maxHealth
 	
 	chunkTimer = CHUNK_TIMER
 	shakeTimer = SHAKE_DURATION
+	flash_bar.color.a = 1

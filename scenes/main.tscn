@@ -67,6 +67,15 @@ offset_right = 260.0
 offset_bottom = 41.0
 color = Color(0.627451, 1, 0.627451, 1)
 
+[node name="FlashBar" type="ColorRect" parent="UI/HealthBar" unique_id=134603676]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 60.0
+offset_top = 25.0
+offset_right = 260.0
+offset_bottom = 41.0
+color = Color(0.9411765, 1, 0.9411765, 0)
+
 [node name="HpTitle" type="Label" parent="UI/HealthBar" unique_id=77658577]
 layout_mode = 0
 offset_left = 57.0
