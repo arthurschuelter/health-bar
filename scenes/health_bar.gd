@@ -113,7 +113,6 @@ func punchAnimation(dt: float):
 
 func healthColorState():
 	var ratio: float = float(self.curHealth) / self.maxHealth
-	print(ratio)
 	if ratio > 0.5:
 		health_bar.color = color_high
 	elif ratio > 0.25:

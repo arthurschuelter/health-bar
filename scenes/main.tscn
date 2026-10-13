@@ -31,7 +31,7 @@ mouse_filter = 1
 script = ExtResource("3_tefeu")
 
 [node name="Marker2D" type="Marker2D" parent="UI/DamageNumberSpawner" unique_id=1375737601]
-position = Vector2(160, 68)
+position = Vector2(148, 60)
 
 [node name="HealthBar" type="Control" parent="UI" unique_id=2134958618]
 layout_mode = 1
