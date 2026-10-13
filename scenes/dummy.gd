@@ -8,16 +8,19 @@ var maxHealth: int = 100
 
 var mouseEntered: bool = false
 signal changeHealth
+signal spawnDamage
 
 func _input(event: InputEvent):
 	handleMouse(event)
 
 func handleMouse(event: InputEvent):
 	if event is InputEventMouseButton and mouseEntered and event.is_pressed():
-		curHealth -= rng.randi_range(5, 15)
+		var dmg = rng.randi_range(5, 15)
+		curHealth -= dmg
 		if curHealth <= 0:
 			curHealth = maxHealth
 		changeHealth.emit(curHealth, maxHealth)
+		spawnDamage.emit(dmg)
 
 func _on_dummy_mouse_entered() -> void:
 	mouseEntered = true
