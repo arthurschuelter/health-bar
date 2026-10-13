@@ -2,12 +2,16 @@
 
 [ext_resource type="Script" uid="uid://dfuba4e0tx4ug" path="res://scenes/dummy.gd" id="1_k5f3b"]
 [ext_resource type="Texture2D" uid="uid://bsylsouv3ee5x" path="res://icon.svg" id="1_kre8v"]
+[ext_resource type="AudioStream" uid="uid://bqpfb8glaf8ug" path="res://assets/hitHurt.wav" id="3_6m2ry"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r66f4"]
 size = Vector2(42, 38)
 
 [node name="dummy" type="Node2D" unique_id=310666992]
 script = ExtResource("1_k5f3b")
+
+[node name="SfxPlayer" type="AudioStreamPlayer2D" parent="." unique_id=1169577098]
+stream = ExtResource("3_6m2ry")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=78525705]
 scale = Vector2(0.25, 0.25)
