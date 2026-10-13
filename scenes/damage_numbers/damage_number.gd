@@ -4,7 +4,7 @@ class_name DamageNumber
 @onready var label: Label = $Label
 @onready var timer: Timer = $Timer
 
-@export var waitTime: float = 1.2
+@export var waitTime: float = 1.4
 
 # 1. Smooth print
 @export var increaseTime: float = 0.8
@@ -39,7 +39,13 @@ var scaleFactor
 # 8. Critical hit
 var criticalHit: bool
 
+# 9. Colours
+@export var colourLow: Color
+@export var colourHigh: Color
+@export var colourCrit: Color
+
 func _ready() -> void:
+	label_settings = label_settings.duplicate()
 	timer.wait_time = self.waitTime
 	timer.start()
 
@@ -101,6 +107,18 @@ func Initialize(target: int, scale: float, direction: int, criticalHit: bool) ->
 	if criticalHit:
 		self.shown = target
 		self.scaleFactor = maxScale
+	
+	setColour(scale)
+
+func setColour(scale: float):
+	if self.criticalHit:
+		label_settings.font_color = colourCrit
+		return
+	
+	if scale < 0.67:
+		label_settings.font_color = colourLow
+	else:
+		label_settings.font_color = colourHigh
 
 func _on_timer_timeout() -> void:
 	queue_free()

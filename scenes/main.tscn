@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cry148xbd01fj" path="res://scenes/dummy.tscn" id="1_o5qli"]
 [ext_resource type="FontFile" uid="uid://dhxaex8n8adqb" path="res://assets/JetBrainsMono-Bold.ttf" id="2_0wfyh"]
 [ext_resource type="Script" uid="uid://4xoety3ihdj2" path="res://scenes/health_bar.gd" id="2_sugp2"]
+[ext_resource type="AudioStream" uid="uid://bqpfb8glaf8ug" path="res://assets/hitHurt.wav" id="3_o6xl0"]
 [ext_resource type="Script" uid="uid://cb6expq6a2swa" path="res://scenes/damage_numbers/damage_number_spawner.gd" id="3_tefeu"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_r66f4"]
@@ -19,6 +20,9 @@ script = ExtResource("1_jyhfs")
 [node name="dummy" parent="." unique_id=310666992 instance=ExtResource("1_o5qli")]
 unique_name_in_owner = true
 position = Vector2(160, 87)
+
+[node name="SfxPlayer" type="AudioStreamPlayer2D" parent="dummy" unique_id=1579660519]
+stream = ExtResource("3_o6xl0")
 
 [node name="UI" type="Control" parent="." unique_id=1016467949]
 layout_mode = 3
@@ -48,7 +52,7 @@ grow_vertical = 2
 pivot_offset = Vector2(160, 33)
 script = ExtResource("2_sugp2")
 color_high = Color(0.627451, 1, 0.627451, 1)
-color_mid = Color(0.8968467, 0.94577366, 2.3102762e-06, 1)
+color_mid = Color(0.9416433, 0.99085456, 0, 1)
 color_low = Color(1, 0.53999996, 0.53999996, 1)
 metadata/_edit_lock_ = true
 
