@@ -1,0 +1,131 @@
+[gd_scene format=3 uid="uid://dudx87nag88sg"]
+
+[ext_resource type="Script" uid="uid://4xoety3ihdj2" path="res://scenes/health_bar/health_bar.gd" id="1_8gela"]
+[ext_resource type="FontFile" uid="uid://dhxaex8n8adqb" path="res://assets/JetBrainsMono-Bold.ttf" id="2_n3ttx"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_r66f4"]
+font = ExtResource("2_n3ttx")
+font_size = 10
+
+[node name="HealthBar" type="Control" unique_id=497636727]
+layout_mode = 3
+anchor_left = 0.07700001
+anchor_top = 0.057000004
+anchor_right = 0.07700001
+anchor_bottom = 0.057000004
+offset_left = -24.640003
+offset_top = -10.26
+offset_right = 180.36
+offset_bottom = 9.74
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(160, 33)
+script = ExtResource("1_8gela")
+color_high = Color(0.627451, 1, 0.627451, 1)
+color_mid = Color(0.9416433, 0.99085456, 0, 1)
+color_low = Color(1, 0.53999996, 0.53999996, 1)
+
+[node name="WhiteBG" type="ColorRect" parent="." unique_id=1291296171]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -102.0
+offset_top = -10.0
+offset_right = 102.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(48, 6)
+
+[node name="BlackBG" type="ColorRect" parent="." unique_id=1656641789]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -101.0
+offset_top = -9.0
+offset_right = 101.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(48, 6)
+color = Color(0, 0, 0, 1)
+
+[node name="ChunkBar" type="ColorRect" parent="." unique_id=524426709]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -8.0
+offset_right = 100.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.9411765, 1, 0.9411765, 1)
+
+[node name="HealthBar" type="ColorRect" parent="." unique_id=1431856105]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -8.0
+offset_right = 100.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.627451, 1, 0.627451, 1)
+
+[node name="FlashBar" type="ColorRect" parent="." unique_id=595990461]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -8.0
+offset_right = 100.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.9411765, 1, 0.9411765, 0)
+
+[node name="HpTitle" type="Label" parent="." unique_id=841119964]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 1.0
+offset_top = -22.5
+offset_right = 41.0
+offset_bottom = 0.5
+grow_vertical = 2
+text = "HP"
+label_settings = SubResource("LabelSettings_r66f4")
+
+[node name="HpValue" type="Label" parent="." unique_id=1253479703]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -81.0
+offset_top = -12.0
+offset_bottom = 11.0
+grow_horizontal = 0
+text = "100/100"
+label_settings = SubResource("LabelSettings_r66f4")
+horizontal_alignment = 2

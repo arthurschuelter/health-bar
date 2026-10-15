@@ -25,10 +25,10 @@ var moveY: float = 30
 var fadeOutSpeed: float = 1.0
 
 # 5. Fade out
-var gravityForce: float = 500
+var gravityForce: float = 550
 
 # 6. Arc movement
-var startingVelocity = Vector2(50, -120)
+var startingVelocity = Vector2(80, -170)
 var velocity: Vector2
 
 # 7. Size = damage
