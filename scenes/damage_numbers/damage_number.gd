@@ -4,6 +4,8 @@ class_name DamageNumber
 @onready var label: Label = $Label
 @onready var timer: Timer = $Timer
 
+var rng = RandomNumberGenerator.new()
+
 @export var waitTime: float = 1.4
 
 # 1. Smooth print
@@ -28,7 +30,11 @@ var fadeOutSpeed: float = 1.0
 var gravityForce: float = 550
 
 # 6. Arc movement
-var startingVelocity = Vector2(80, -170)
+var startingVelocity: Vector2
+var minSpeedX = 80
+var maxSpeedX = 40
+var minSpeedY = -150
+var maxSpeedY = -170
 var velocity: Vector2
 
 # 7. Size = damage
@@ -99,7 +105,12 @@ func Initialize(target: int, scale: float, direction: int, criticalHit: bool) ->
 	
 	self.targetY = self.global_position.y - moveY
 	
+	self.startingVelocity = Vector2(
+		rng.randf_range(minSpeedX, maxSpeedX),
+		rng.randf_range(minSpeedY, maxSpeedY)
+	)
 	self.startingVelocity.x *= direction
+	
 	self.velocity = self.startingVelocity
 	
 	self.criticalHit = criticalHit
