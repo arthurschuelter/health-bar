@@ -2,6 +2,8 @@ extends Node2D
 class_name Dummy
 
 @onready var sfx_player: AudioStreamPlayer2D = $SfxPlayer
+@onready var sprite_2d: Sprite2D = $Sprite2D
+var flash_tween: Tween
 
 # Damage values
 var rng = RandomNumberGenerator.new()
@@ -20,9 +22,15 @@ var mouseEntered: bool = false
 var scaleSpeed: float = 10
 var minScale = Vector2(0.6, 0.6)
 
+# Respawn
+var spawnPoint: Vector2 = Vector2(0,0)
+
 # Signals
 signal changeHealth
 signal spawnDamage
+
+func _ready() -> void:
+	sprite_2d.material = sprite_2d.material.duplicate()
 
 func _input(event: InputEvent):
 	handleMouse(event)
@@ -45,11 +53,12 @@ func handleMouse(event: InputEvent):
 		
 		curHealth -= dmg
 		if curHealth <= 0:
-			curHealth = maxHealth
+			die()
 		
 		changeHealth.emit(curHealth, maxHealth)
 		spawnDamage.emit(dmg, minDamage, maxDamage, crit)
 		playHitSfx(crit)
+		hitFlash()
 		
 		self.scale = minScale
 
@@ -59,6 +68,25 @@ func playHitSfx(criticalHit: bool):
 	if criticalHit:
 		sfx_player.pitch_scale = 0.40
 	sfx_player.play()
+
+func hitFlash(duration: float = 0.25) -> void:
+	if flash_tween:
+		flash_tween.kill()
+	var mat := sprite_2d.material as ShaderMaterial
+	mat.set_shader_parameter("flash_amount", 1.0)
+	flash_tween = create_tween()
+	flash_tween.tween_property(mat, "shader_parameter/flash_amount", 0.0, duration)
+
+func die() -> void:
+	sprite_2d.position.x = -100
+	respawn()
+
+func respawn() -> void:
+	var newSprite: Sprite2D = sprite_2d.duplicate()
+	newSprite.position = spawnPoint
+	sprite_2d.queue_free()
+	
+	add_child(newSprite)
 
 func _on_dummy_mouse_entered() -> void:
 	mouseEntered = true

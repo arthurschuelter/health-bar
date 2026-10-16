@@ -1,6 +1,15 @@
 extends Label
 class_name DamageNumber
 
+enum Type { NORMAL, CRIT, HEAL, POISON, BLOCKED }
+
+@export var typeColours: Dictionary = {
+	Type.CRIT: Color("ffd700"),
+	Type.HEAL: Color("5be37d"),
+	Type.POISON: Color("9b59b6"),
+	Type.BLOCKED: Color("9aa0a6"),
+}
+
 @onready var label: Label = $Label
 @onready var timer: Timer = $Timer
 
@@ -10,6 +19,7 @@ var rng = RandomNumberGenerator.new()
 
 # 1. Smooth print
 @export var increaseTime: float = 0.8
+@export var enableSmoothPrint: bool = false
 var SPEED: float = 8 * waitTime / increaseTime
 var shown: float
 var target: int
@@ -56,7 +66,7 @@ func _ready() -> void:
 	timer.start()
 
 func _process(delta: float) -> void:
-	smoothPrint(delta)
+	smoothPrint(delta, enableSmoothPrint)
 	popIn(delta)
 	#floatUpwards(delta)
 	fadeOut(delta)
@@ -64,9 +74,12 @@ func _process(delta: float) -> void:
 	
 	move(delta)
 
-func smoothPrint(dt: float):
+func smoothPrint(dt: float, active: bool):
 	shown = lerpf(shown, float(target), SPEED * dt)
 	if (target - shown < 0.1):
+		shown = target
+	
+	if not active:
 		shown = target
 	
 	self.text = "%s" % [int(self.shown)]
@@ -121,15 +134,16 @@ func Initialize(target: int, scale: float, direction: int, criticalHit: bool) ->
 	
 	setColour(scale)
 
-func setColour(scale: float):
+func setColour(scale: float, type: Type = Type.NORMAL):
+	var fill: Color
 	if self.criticalHit:
-		label_settings.font_color = colourCrit
-		return
-	
-	if scale < 0.67:
-		label_settings.font_color = colourLow
+		fill = colourCrit
+	elif type == Type.NORMAL:
+		fill = colourLow.lerp(colourHigh, clampf(scale, 0.0, 1.0))
 	else:
-		label_settings.font_color = colourHigh
+		fill = typeColours[type]
+	
+	label_settings.font_color = fill
 
 func _on_timer_timeout() -> void:
 	queue_free()

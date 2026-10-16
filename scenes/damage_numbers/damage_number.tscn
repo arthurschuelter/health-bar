@@ -20,7 +20,7 @@ horizontal_alignment = 1
 script = ExtResource("2_hkbqy")
 colourLow = Color(1, 1, 1, 1)
 colourHigh = Color(1, 0.5142002, 0.4480263, 1)
-colourCrit = Color(0.9139012, 0.9637864, 0.0009618449, 1)
+colourCrit = Color(1, 0.84313726, 0, 1)
 
 [node name="Timer" type="Timer" parent="." unique_id=139602846]
 
