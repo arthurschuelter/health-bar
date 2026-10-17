@@ -78,15 +78,13 @@ func hitFlash(duration: float = 0.25) -> void:
 	flash_tween.tween_property(mat, "shader_parameter/flash_amount", 0.0, duration)
 
 func die() -> void:
+	sprite_2d.modulate.a = 0
 	sprite_2d.position.x = -100
-	respawn()
+	#respawn()
 
 func respawn() -> void:
-	var newSprite: Sprite2D = sprite_2d.duplicate()
-	newSprite.position = spawnPoint
-	sprite_2d.queue_free()
-	
-	add_child(newSprite)
+	sprite_2d.position.x = 0
+	curHealth = maxHealth
 
 func _on_dummy_mouse_entered() -> void:
 	mouseEntered = true
