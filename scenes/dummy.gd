@@ -3,6 +3,7 @@ class_name Dummy
 
 @onready var sfx_player: AudioStreamPlayer2D = $SfxPlayer
 @onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var area_2d: Area2D = $Area2D
 var flash_tween: Tween
 
 # Damage values
@@ -23,6 +24,9 @@ var scaleSpeed: float = 10
 var minScale = Vector2(0.6, 0.6)
 
 # Respawn
+@onready var respawnTimer: Timer = $RespawnTimer
+@onready var deadSprite: Sprite2D = $DeadSprite
+var isDead: bool = false
 var spawnPoint: Vector2 = Vector2(0,0)
 
 # Signals
@@ -31,6 +35,8 @@ signal spawnDamage
 
 func _ready() -> void:
 	sprite_2d.material = sprite_2d.material.duplicate()
+	deadSprite.material = deadSprite.material.duplicate()
+	deadSprite.visible = false
 
 func _input(event: InputEvent):
 	handleMouse(event)
@@ -45,13 +51,16 @@ func scaleBack(dt: float):
 
 func handleMouse(event: InputEvent):
 	if event is InputEventMouseButton and mouseEntered and event.is_pressed():
-		var dmg = rng.randi_range(minDamage, maxDamage)
+		if isDead:
+			return
+		
+		var dmg = rng.randi_range(minDamage, maxDamage) * 5
 		var crit: bool = rng.randf() <= critChance
 		
 		if crit:
 			dmg *= 2
 		
-		curHealth -= dmg
+		curHealth = max(curHealth - dmg, 0)
 		if curHealth <= 0:
 			die()
 		
@@ -78,16 +87,38 @@ func hitFlash(duration: float = 0.25) -> void:
 	flash_tween.tween_property(mat, "shader_parameter/flash_amount", 0.0, duration)
 
 func die() -> void:
-	sprite_2d.modulate.a = 0
-	sprite_2d.position.x = -100
-	#respawn()
+	print("Died")
+	respawnTimer.start(0.5)
+	isDead = true
+	
+	sprite_2d.visible = false
+	DeathAnimation(deadSprite)
 
 func respawn() -> void:
-	sprite_2d.position.x = 0
+	print("Respawned")
+	isDead = false
 	curHealth = maxHealth
+	changeHealth.emit(curHealth, maxHealth)
+	
+	RespawnAnimation(sprite_2d)
+	deadSprite.visible = false
+
+func DeathAnimation(sprite: Sprite2D) -> void:
+	sprite.visible = true
+	sprite.position = spawnPoint
+	
+	var tween = get_tree().create_tween()
+	#tween.tween_property(sprite, "scale", Vector2(), 0.5)
+	tween.tween_property(sprite, "position", Vector2(0, 200), 0.5)
+
+func RespawnAnimation(sprite: Sprite2D) -> void:
+	sprite.visible = true
 
 func _on_dummy_mouse_entered() -> void:
 	mouseEntered = true
 
 func _on_dummy_mouse_exited() -> void:
 	mouseEntered = false
+
+func _on_respawn_timer_timeout() -> void:
+	respawn()

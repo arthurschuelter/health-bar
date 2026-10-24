@@ -24,10 +24,21 @@ material = SubResource("ShaderMaterial_6m2ry")
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("1_kre8v")
 
+[node name="DeadSprite" type="Sprite2D" parent="." unique_id=1931828757]
+material = SubResource("ShaderMaterial_6m2ry")
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("1_kre8v")
+flip_v = true
+
 [node name="Area2D" type="Area2D" parent="." unique_id=446488988]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1966100079]
 shape = SubResource("RectangleShape2D_r66f4")
 
+[node name="RespawnTimer" type="Timer" parent="." unique_id=484684343]
+wait_time = 0.5
+one_shot = true
+
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_dummy_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_dummy_mouse_exited"]
+[connection signal="timeout" from="RespawnTimer" to="." method="_on_respawn_timer_timeout"]
