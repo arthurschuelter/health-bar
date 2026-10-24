@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dfuba4e0tx4ug" path="res://scenes/dummy.gd" id="1_k5f3b"]
 [ext_resource type="Texture2D" uid="uid://bsylsouv3ee5x" path="res://icon.svg" id="1_kre8v"]
 [ext_resource type="AudioStream" uid="uid://bqpfb8glaf8ug" path="res://assets/hitHurt.wav" id="3_6m2ry"]
+[ext_resource type="AudioStream" uid="uid://bpl603jxflgth" path="res://scenes/death_2.wav" id="3_fva3d"]
 [ext_resource type="Shader" uid="uid://3tq7q5tsj8ag" path="res://scenes/damage_numbers/hit_flash.gdshader" id="3_w4gkx"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6m2ry"]
@@ -15,6 +16,8 @@ size = Vector2(58, 56)
 
 [node name="dummy" type="Node2D" unique_id=310666992]
 script = ExtResource("1_k5f3b")
+hitHurtSfx = ExtResource("3_6m2ry")
+deathSfx = ExtResource("3_fva3d")
 
 [node name="SfxPlayer" type="AudioStreamPlayer2D" parent="." unique_id=1169577098]
 stream = ExtResource("3_6m2ry")

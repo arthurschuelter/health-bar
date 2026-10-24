@@ -1,9 +1,15 @@
 extends Node2D
 class_name Dummy
 
-@onready var sfx_player: AudioStreamPlayer2D = $SfxPlayer
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var area_2d: Area2D = $Area2D
+
+@onready var sfx_player: AudioStreamPlayer2D = $SfxPlayer
+@export var hitHurtSfx: AudioStream
+@export var deathSfx: AudioStream
+var masterBus = "Master"
+var pitchShiftBus = "PitchShift"
+
 var flash_tween: Tween
 
 # Damage values
@@ -37,6 +43,7 @@ var respawnTween: Tween
 # Signals
 signal changeHealth
 signal spawnDamage
+signal shakeScreen
 
 func _ready() -> void:
 	sprite_2d.material = sprite_2d.material.duplicate()
@@ -61,30 +68,41 @@ func handleMouse(event: InputEvent):
 		if isDead:
 			return
 		
-		var dmg = rng.randi_range(minDamage, maxDamage) * 5
+		var clickPosition: Vector2 = event.position
+		var dmg = rng.randi_range(minDamage, maxDamage)
 		var crit: bool = rng.randf() <= critChance
+		var audioStream: AudioStream = hitHurtSfx
 		
 		if crit:
 			dmg *= 2
 		
 		curHealth = max(curHealth - dmg, 0)
 		if curHealth <= 0:
+			audioStream = deathSfx
+			Animation2D.DeathParticles(self, self.global_position)
 			die()
 		
 		changeHealth.emit(curHealth, maxHealth)
 		spawnDamage.emit(dmg, minDamage, maxDamage, crit)
-		playHitSfx(crit)
+		shakeScreen.emit()
+		Animation2D.HitParticles(sprite_2d, clickPosition)
+		playHitSfx(audioStream, crit)
 		hitFlash()
 		
 		self.scale = minScale
 
-func playHitSfx(criticalHit: bool):
-	var pitch: float = rng.randf_range(0.75, 1.20)
+func playHitSfx(audioStream: AudioStream, criticalHit: bool):
+	var pitch: float = rng.randf_range(0.75, 1.10)
+	sfx_player.stream = audioStream
 	sfx_player.pitch_scale = pitch
+	
 	if criticalHit:
-		sfx_player.pitch_scale = 0.40
+		sfx_player.pitch_scale = 1
+		sfx_player.bus = pitchShiftBus
 	sfx_player.play()
+	sfx_player.bus = masterBus
 
+	
 func hitFlash(duration: float = 0.25) -> void:
 	if flash_tween:
 		flash_tween.kill()

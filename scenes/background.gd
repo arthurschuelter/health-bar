@@ -1,9 +1,9 @@
 extends Node
 
-const SCREEN_WIDTH = 320
-const SCREEN_HEIGHT = 180
+const SCREEN_WIDTH = 320 * 1.5
+const SCREEN_HEIGHT = 180 * 1.5
 const RECT_SIZE: int = 16
-const PERIOD: int = RECT_SIZE * 2
+const PERIOD: int = RECT_SIZE * 4
 
 const COLOR_1: Color = Color(0.69, 0.69, 0.69, 0.3)
 const COLOR_2: Color = Color(0.235, 0.235, 0.235, 0.3)

@@ -63,3 +63,81 @@ static func RespawnAnimation (
 		.set_trans(Tween.TRANS_QUINT)
 	
 	return respawnTween
+
+static func ShakeNode(
+	node: Node, 
+	shakeTimer: float, 
+	shakeAmount := 2.0, 
+	shakeDuration := 0.15
+	) -> void:
+		var startingPosition = node.position
+		var shakeStrength: float = shakeAmount * (shakeTimer / shakeDuration)
+		
+		node.position = startingPosition + Vector2(
+			randf_range(-shakeStrength, shakeStrength),
+			randf_range(-shakeStrength, shakeStrength)
+		)
+
+static func HitParticles(parent: Node, position: Vector2, duration:= 0.6) -> void :
+	var particles := CPUParticles2D.new()
+	# Set Up
+	particles.emitting = false
+	particles.amount = 16
+	particles.lifetime = duration
+	particles.explosiveness = 1.0
+	particles.one_shot = true
+	
+	# Movement
+	particles.direction = Vector2.UP
+	particles.spread = 180.0
+	particles.initial_velocity_min = 160.0
+	particles.initial_velocity_max = 200.0
+	particles.gravity = Vector2(0, 80)
+	
+	# Aesthetics
+	var baseColor: Color = Color(0.95, 0.95, 0.95, 1.0)
+	var fadeColor: Color = Color(0.95, 0.95, 0.95, 0.0)
+	particles.scale_amount_min = 1.0
+	particles.scale_amount_max = 3.0
+	particles.color = baseColor
+	var fade := Gradient.new()
+	fade.set_color(0, baseColor)
+	fade.set_color(1, fadeColor)
+	particles.color_ramp = fade
+	
+	parent.add_child(particles)
+	particles.global_position = position
+	particles.emitting = true
+	particles.finished.connect(particles.queue_free)
+
+static func DeathParticles(parent: Node, position: Vector2, duration:= 0.6) -> void :
+	var particles := CPUParticles2D.new()
+	# Set Up
+	particles.emitting = false
+	particles.amount = 64
+	particles.lifetime = duration
+	particles.explosiveness = 1.0
+	particles.one_shot = true
+	
+	# Movement
+	particles.direction = Vector2.UP
+	particles.spread = 180.0
+	particles.initial_velocity_min = 160.0
+	particles.initial_velocity_max = 320.0
+	particles.gravity = Vector2(0, 80)
+	
+	# Aesthetics
+	var baseColor: Color = Color(0.95, 0.95, 0.95, 1.0)
+	var fadeColor: Color = Color(0.95, 0.95, 0.95, 0.0)
+	particles.scale_amount_min = 5.0
+	particles.scale_amount_max = 8.0
+	particles.color = baseColor
+	var fade := Gradient.new()
+	fade.set_color(0, baseColor)
+	fade.set_color(1, fadeColor)
+	particles.color_ramp = fade
+	
+	parent.add_child(particles)
+	particles.global_position = position
+	particles.emitting = true
+	particles.finished.connect(particles.queue_free)
