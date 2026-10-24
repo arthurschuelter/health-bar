@@ -28,7 +28,6 @@ texture = ExtResource("1_kre8v")
 material = SubResource("ShaderMaterial_6m2ry")
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("1_kre8v")
-flip_v = true
 
 [node name="Area2D" type="Area2D" parent="." unique_id=446488988]
 

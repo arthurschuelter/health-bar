@@ -27,7 +27,12 @@ var minScale = Vector2(0.6, 0.6)
 @onready var respawnTimer: Timer = $RespawnTimer
 @onready var deadSprite: Sprite2D = $DeadSprite
 var isDead: bool = false
+var rotationDegrees: int = 90
+var animationOffset: int = 30
 var spawnPoint: Vector2 = Vector2(0,0)
+var initialSpriteScale: Vector2 = Vector2(0,0)
+var deathTween: Tween
+var respawnTween: Tween
 
 # Signals
 signal changeHealth
@@ -37,6 +42,8 @@ func _ready() -> void:
 	sprite_2d.material = sprite_2d.material.duplicate()
 	deadSprite.material = deadSprite.material.duplicate()
 	deadSprite.visible = false
+	
+	initialSpriteScale = sprite_2d.scale
 
 func _input(event: InputEvent):
 	handleMouse(event)
@@ -87,32 +94,29 @@ func hitFlash(duration: float = 0.25) -> void:
 	flash_tween.tween_property(mat, "shader_parameter/flash_amount", 0.0, duration)
 
 func die() -> void:
-	print("Died")
 	respawnTimer.start(0.5)
 	isDead = true
 	
 	sprite_2d.visible = false
-	DeathAnimation(deadSprite)
+	var randomDirection = 1 if rng.randf() < 0.5 else -1
+	deathTween = Animation2D.DeathAnimation(
+		deadSprite, 
+		spawnPoint, 
+		rotationDegrees * randomDirection, 
+		initialSpriteScale, 
+		animationOffset * randomDirection
+	)
 
 func respawn() -> void:
-	print("Respawned")
 	isDead = false
 	curHealth = maxHealth
 	changeHealth.emit(curHealth, maxHealth)
 	
-	RespawnAnimation(sprite_2d)
 	deadSprite.visible = false
-
-func DeathAnimation(sprite: Sprite2D) -> void:
-	sprite.visible = true
-	sprite.position = spawnPoint
 	
-	var tween = get_tree().create_tween()
-	#tween.tween_property(sprite, "scale", Vector2(), 0.5)
-	tween.tween_property(sprite, "position", Vector2(0, 200), 0.5)
-
-func RespawnAnimation(sprite: Sprite2D) -> void:
-	sprite.visible = true
+	if respawnTween:
+		respawnTween.kill()
+	respawnTween = Animation2D.RespawnAnimation(sprite_2d, initialSpriteScale)
 
 func _on_dummy_mouse_entered() -> void:
 	mouseEntered = true
